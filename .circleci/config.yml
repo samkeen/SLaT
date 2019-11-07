@@ -50,6 +50,7 @@ jobs:
             . venv/bin/activate
             pytest --cov=slat
             coverage html
+            coveralls
 
 
       - store_artifacts:
