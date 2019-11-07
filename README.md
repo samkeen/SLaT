@@ -3,6 +3,7 @@
 
 Collection of reusable Python tools for lambda development
 
+[![CircleCI](https://circleci.com/gh/samkeen/SLaT.svg?style=svg)](https://circleci.com/gh/samkeen/SLaT)
 
 ## Logging
  [Structlog](http://www.structlog.org/en/stable/index.html) is used for structured JSON logging
