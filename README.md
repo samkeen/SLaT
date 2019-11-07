@@ -30,6 +30,18 @@ For test runs you can add an ENV flag `TESTING_RUN=true` and log statements will
 TESTING_RUN=true pytest
 ```
 
+### Running tests
+```
+pytest
+
+# with coverage 
+pytest --cov=slat
+
+# generage html report
+coverage html
+open ./htmlcov/index.html
+```
+
 ## Developing
 
 ### create file ~/.pypirc
