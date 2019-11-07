@@ -5,10 +5,16 @@ Collection of reusable Python tools for lambda development
 
 [![CircleCI](https://circleci.com/gh/samkeen/SLaT.svg?style=svg)](https://circleci.com/gh/samkeen/SLaT)
 [![Coverage Status](https://coveralls.io/repos/github/samkeen/SLaT/badge.svg?branch=master)](https://coveralls.io/github/samkeen/SLaT?branch=master)
+
+# Slat Tools
+
+## Responses
+TBDocumented
+
 ## Logging
  [Structlog](http://www.structlog.org/en/stable/index.html) is used for structured JSON logging
  
- ### Usage
+**Example Usage**
 ```python
 import logging
 from slat.log_util import LogUtil
@@ -31,7 +37,7 @@ For test runs you can add an ENV flag `TESTING_RUN=true` and log statements will
 TESTING_RUN=true pytest
 ```
 
-### Running tests
+# Running tests
 ```
 pytest
 
@@ -43,9 +49,9 @@ coverage html
 open ./htmlcov/index.html
 ```
 
-## Developing
+# Developing
 
-### create file ~/.pypirc
+**create file ~/.pypirc**
 ```
 [distutils]
 index-servers =
@@ -63,21 +69,20 @@ username:
 password:
 ```
 
-
-### build
+**build**
 ```
 # tick to semver `version` in setup.py
 rm -rf dist
 python setup.py bdist_wheel --universal
 ```
 
-### pypitest
+**pypitest**
 ```
 twine upload --repository pypitest dist/*
 pip install slat --index-url https://test.pypi.org/simple/
 ```
 
-### pypi
+**pypi**
 ```
 twine upload --repository pypi dist/*
 pip install slat
