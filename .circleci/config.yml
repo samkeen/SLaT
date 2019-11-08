@@ -48,6 +48,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            pylint slat --output-format=text --reports=y
             pytest --cov=slat
             coverage html
             coveralls

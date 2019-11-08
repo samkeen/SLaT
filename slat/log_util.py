@@ -1,3 +1,6 @@
+"""
+LogUtil integrates structured logging via structlog.
+This also gives us the ability to bind key/vals for all log statements"""
 import logging
 import os
 import sys
