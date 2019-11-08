@@ -83,21 +83,42 @@ class LogUtil:
         )
         log = structlog.getLogger()
         # @TODO gotta be a better way to do this??
-        if os.getenv('TESTING_RUN', False):
-            fh = logging.FileHandler('testing.log')
-            log.addHandler(fh)
+        if os.getenv('TESTING_RUN', None):
+            file_handler = logging.FileHandler('testing.log')
+            log.addHandler(file_handler)
         return log
 
     @staticmethod
     def init_request(key_val: Dict[str, str]):
+        """
+
+        :param key_val:
+        :type key_val: Dict[str, str]
+        :return:
+        :rtype: None
+        """
         LogUtil.bind(key_val, clear_thread_local=True)
 
     @staticmethod
     def bind(key_val: Dict[str, str], clear_thread_local=False):
+        """
+
+        :param key_val:
+        :type key_val: Dict[str, str]
+        :param clear_thread_local:
+        :type clear_thread_local: bool
+        :return:
+        :rtype: None
+        """
         if clear_thread_local:
             LogUtil.clear_threadlocal()
         bind_threadlocal(**key_val)
 
     @staticmethod
     def clear_threadlocal():
+        """
+
+        :return:
+        :rtype: None
+        """
         clear_threadlocal()

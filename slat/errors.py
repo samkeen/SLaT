@@ -1,3 +1,7 @@
+"""
+Exception to through that ensures all needed information is gathered in order to return
+a well formed lambda response
+"""
 import json
 
 

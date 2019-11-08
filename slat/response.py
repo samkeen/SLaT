@@ -1,14 +1,18 @@
+"""Class implementing the lambda response format standards for API Gateway"""
 from slat.types import JsonapiBody, JsonDict
 
 
 class LambdaProxyResponse:
+    """
+    ensure we have the correct response format as per
+    https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
+    """
 
     @staticmethod
     def respond(status_code: int, resp_payload: JsonapiBody, context: object) -> JsonDict:
         """
         Returns the expected Proxy integration lambda response format
         structure mandated as per
-        https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
         :param status_code:
         :type status_code: int
         :param resp_payload:
