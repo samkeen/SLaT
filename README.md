@@ -1,6 +1,9 @@
 # SLaT
 **S**imple **La**mbda **T**oolkit
 
+[![CircleCI](https://circleci.com/gh/samkeen/SLaT.svg?style=svg)](https://circleci.com/gh/samkeen/SLaT)
+[![Coverage Status](https://coveralls.io/repos/github/samkeen/SLaT/badge.svg?branch=master)](https://coveralls.io/github/samkeen/SLaT?branch=master)
+
 Collection of reusable Python tools for lambda development.
 
 This project is meant to meat these requirements
@@ -9,9 +12,25 @@ This project is meant to meat these requirements
 - As a lambda developer I want to ensure I sends proper, consistent, well formed responses
 - *As a lambda developer I want ToBeDetermined*
 
+Example hello world Lambda
+```python
+from slat.log_util import LogUtil
+from slat.response import LambdaProxyResponse
+from slat.types import JsonapiBody
 
-[![CircleCI](https://circleci.com/gh/samkeen/SLaT.svg?style=svg)](https://circleci.com/gh/samkeen/SLaT)
-[![Coverage Status](https://coveralls.io/repos/github/samkeen/SLaT/badge.svg?branch=master)](https://coveralls.io/github/samkeen/SLaT?branch=master)
+# initiate you logger outside the handler
+log = LogUtil.init_logger(env_var_name='LOG_LEVEL', default_level='INFO')
+
+def lambda_handler(event, context):
+    # bind the request id to the logger
+    LogUtil.init_request({'request_id': context.aws_request_id})
+    # make log statements as normal
+    log.debug('Lambda Handler Event', lambda_handler_event=event)
+    # prepare a Jsonapi payload (https://jsonapi.org/)
+    response_body = JsonapiBody(data={'hello': 'world!'}, errors=[], meta={})
+    # respond in the expected APIGateway lambda proxy format (https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format)
+    return LambdaProxyResponse.respond(200, response_body, context)
+```
 
 # Slat Tools
 
@@ -54,26 +73,6 @@ pytest --cov=slat
 # generage html report
 coverage html
 open ./htmlcov/index.html
-```
-
-# Example Lambda
-```python
-from slat.log_util import LogUtil
-from slat.response import LambdaProxyResponse
-from slat.types import JsonapiBody
-
-# initiate you logger outside the handler
-log = LogUtil.init_logger(env_var_name='LOG_LEVEL', default_level='INFO')
-
-def lambda_handler(event, context):
-    # bind the request id to the logger
-    LogUtil.init_request({'request_id': context.aws_request_id})
-    # make lag statements as normal
-    log.debug('Lambda Handler Event', lambda_handler_event=event)
-    # prepare a Jsonapi payload (https://jsonapi.org/)
-    response_body = JsonapiBody(data={'hello': 'world!'}, errors=[], meta={})
-    # respond in the expected APIGateway lambda proxy format (https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format)
-    return LambdaProxyResponse.respond(200, response_body, context)
 ```
 
 # Developing
