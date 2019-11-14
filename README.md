@@ -6,7 +6,7 @@
 
 Collection of reusable Python tools for lambda development.
 
-This project is meant to meat these requirements
+This project is meant to :meat_on_bone: (or :corn:) these requirements
 - As a lambda developer I want to write as little boilerplate as possible
 - As a lambda developer I want to ensure I produce high value, discoverable logs
 - As a lambda developer I want to ensure I sends proper, consistent, well formed responses
@@ -105,11 +105,11 @@ python setup.py bdist_wheel --universal
 **pypitest**
 ```
 twine upload --repository pypitest dist/*
-pip install slat --index-url https://test.pypi.org/simple/
+pip install slat --index-url https://test.pypi.org/simple/ --upgrade
 ```
 
 **pypi**
 ```
 twine upload --repository pypi dist/*
-pip install slat
+pip install slat --upgrade
 ```
