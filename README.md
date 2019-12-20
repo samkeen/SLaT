@@ -105,11 +105,11 @@ python setup.py bdist_wheel --universal
 **pypitest**
 ```
 twine upload --repository pypitest dist/*
-pip install slat --index-url https://test.pypi.org/simple/
+pip install slat --index-url https://test.pypi.org/simple/ --upgrade
 ```
 
 **pypi**
 ```
 twine upload --repository pypi dist/*
-pip install slat
+pip install slat --upgrade
 ```

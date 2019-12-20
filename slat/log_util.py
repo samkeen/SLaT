@@ -89,6 +89,15 @@ class LogUtil:
         return log
 
     @staticmethod
+    def get_logger():
+        """
+        Get Logger.  Use this if you need access to logger outside of lambda handler file
+        :return:
+        :rtype:
+        """
+        return structlog.getLogger()
+
+    @staticmethod
     def init_request(key_val: Dict[str, str]):
         """
 
