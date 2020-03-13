@@ -1,16 +1,34 @@
 """
 LogUtil integrates structured logging via structlog.
-This also gives us the ability to bind key/vals for all log statements"""
+This also gives us the ability to bind key/vals for all log statements
+
+inspired by https://gist.github.com/impredicative/ed475ccdcf7759ea8db155f31b41b993
+"""
+import inspect
 import logging
 import os
 import sys
 from typing import Dict
 
 import structlog
-
 # configured for JSON logging
 # see: http://www.structlog.org/en/stable/standard-library.html#rendering-within-structlog
 from structlog.threadlocal import clear_threadlocal, bind_threadlocal
+
+
+def _add_caller_info(logger, method_name, event_dict):  # pylint: disable=unused-argument
+    # Typically skipped funcs: _add_caller_info, _process_event, _proxy_to_logger, _proxy_to_logger
+    frame = inspect.currentframe()
+    while frame:
+        frame = frame.f_back
+        module = frame.f_globals['__name__']
+        if module.startswith('structlog.'):
+            continue
+        event_dict['_module'] = module
+        event_dict['_lineno'] = frame.f_lineno
+        event_dict['_func'] = frame.f_code.co_name
+        return event_dict
+
 
 structlog.configure(
     processors=[
@@ -18,10 +36,11 @@ structlog.configure(
         # This performs the initial filtering, so we don't
         # evaluate e.g. DEBUG when unnecessary
         structlog.stdlib.filter_by_level,
+        _add_caller_info,
         # Adds logger=module_name (e.g __main__)
-        structlog.stdlib.add_logger_name,
+        # structlog.stdlib.add_logger_name,
         # Adds level=info, debug, etc.
-        structlog.stdlib.add_log_level,
+        # structlog.stdlib.add_log_level,
         # Performs the % string interpolation as expected
         structlog.stdlib.PositionalArgumentsFormatter(),
         # add ISO9601 stamp: e.g. 2019-11-06T19:53:41.189600Z
@@ -81,21 +100,23 @@ class LogUtil:
             stream=sys.stdout,
             level=log_level.upper(),
         )
-        log = structlog.getLogger()
-        # @TODO gotta be a better way to do this??
-        if os.getenv('TESTING_RUN', None):
-            file_handler = logging.FileHandler('testing.log')
-            log.addHandler(file_handler)
-        return log
+
+        return LogUtil.get_logger()
 
     @staticmethod
-    def get_logger():
+    def get_logger(name=None):
         """
         Get Logger.  Use this if you need access to logger outside of lambda handler file
         :return:
         :rtype:
         """
-        return structlog.getLogger()
+        if name is None:
+            name = inspect.currentframe().f_back.f_globals['__name__']
+        log = structlog.wrap_logger(logging.getLogger(name))
+        if os.getenv('TESTING_RUN', None):
+            file_handler = logging.FileHandler('testing.log')
+            log.addHandler(file_handler)
+        return log
 
     @staticmethod
     def init_request(key_val: Dict[str, str]):
