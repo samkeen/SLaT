@@ -40,7 +40,7 @@ structlog.configure(
         # Adds logger=module_name (e.g __main__)
         # structlog.stdlib.add_logger_name,
         # Adds level=info, debug, etc.
-        # structlog.stdlib.add_log_level,
+        structlog.stdlib.add_log_level,
         # Performs the % string interpolation as expected
         structlog.stdlib.PositionalArgumentsFormatter(),
         # add ISO9601 stamp: e.g. 2019-11-06T19:53:41.189600Z

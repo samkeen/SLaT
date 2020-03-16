@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setup(
     name='slat',
-    version='0.2.3',
+    version='0.3.1',
     author="Sam Keen",
     author_email="sam.sjk@gmail.com",
     description="Simple Lambda Toolkit",
